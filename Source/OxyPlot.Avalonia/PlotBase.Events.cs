@@ -108,8 +108,10 @@ namespace OxyPlot.Avalonia
             }
 
             Focus();
-            MouseDevice.Instance.Capture(this);
 
+            var mouseDevice = (VisualRoot as IInputRoot)?.MouseDevice;
+            mouseDevice.Capture(this);
+            
             // store the mouse down point, check it when mouse button is released to determine if the context menu should be shown
             mouseDownPoint = e.GetPosition(this).ToScreenPoint();
 
@@ -145,7 +147,8 @@ namespace OxyPlot.Avalonia
 
             var releasedArgs = (PointerReleasedEventArgs)e;
 
-            MouseDevice.Instance.Capture(null);
+            var mouseDevice = (VisualRoot as IInputRoot)?.MouseDevice;
+            mouseDevice.Capture(null);
 
             e.Handled = ActualController.HandleMouseUp(this, releasedArgs.ToMouseReleasedEventArgs(this));
 
